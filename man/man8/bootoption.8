@@ -1,0 +1,211 @@
+.TH "BOOTOPTION" "8" "November 2018" "bootoption 0.3" "bootoption"
+.SH "NAME"
+bootoption \- EFI boot menu manipulation 
+.SH "SYNOPSIS"
+.B "bootoption"
+.I "command"
+[options]
+.SH "DESCRIPTION"
+Program for setting boot\-related firmware variables.
+.SH "COMMANDS"
+Each
+.I "command"
+is listed with its description and individual arguments.
+.TP 
+.I "list"
+.br
+show the firmware boot menu
+.TP 
+.I "info"
+.br
+show an option's properties
+.RS
+.PP
+usage: bootoption info Boot####
+.TP
+.BR \-v " or " \-\-verbose
+.br
+also show a device path list description
+.RE
+.TP
+.I "create"
+.br
+create a new EFI load option
+.RS
+.TP
+.BR \-l " or " \-\-loader " PATH
+.br
+the PATH to an EFI loader executable
+.TP
+.BR \-d " or " \-\-description " LABEL
+.br
+display LABEL in firmware boot manager
+.TP
+.BR \-a " or " \-\-arguments " STRING
+.br
+optional STRING passed to the loader command line
+.TP
+.BR \-u
+.br
+pass command line arguments as UCS-2 (default is ASCII)
+.TP
+.BR \-@ " or " \-\-optional-data " FILE
+.br
+append optional data from FILE
+.TP
+.BR \-t " or " \-\-test " FILE
+.br
+output to FILE instead of NVRAM
+.RE
+.TP
+.I "order"
+.br
+re-arrange the boot order
+.RS
+.PP
+usage: bootoption order <current position> to <new position>
+.RE
+.TP 
+.I "set"
+.br
+set/modify variables in NVRAM
+.RS
+.TP
+.BR \-n " or " \-\-name " Boot####
+.br
+variable to manipulate
+.TP
+.BR \-d " or " \-\-description " LABEL
+.br
+display LABEL in firmware boot manager
+.TP
+.BR \-a " or " \-\-arguments " STRING
+.br
+optional STRING passed to the loader command line
+.TP
+.BR \-u
+.br
+pass command line arguments as UCS-2 (default is ASCII)
+.TP
+.BR \-@ " or " \-\-optional-data " FILE
+.br
+append optional data from FILE
+.TP
+.BR \-\-active
+.br
+set active attribute, 0 or 1
+.TP
+.BR \-\-hidden
+.br
+set active attribute, 0 or 1
+.TP
+.BR \-x " or " \-\-bootnext " Boot####
+.br
+set BootNext to Boot####
+.TP
+.BR \-t " or " \-\-timeout " SECONDS
+.br
+set boot menu Timeout in SECONDS
+.TP
+.BR \-o " or " \-\-bootorder " Boot#### [Boot####] [Boot####] [...]
+.br
+explicitly set the boot order
+.RE
+.TP
+.I "delete"
+.br
+delete variables from NVRAM
+.RS
+.TP
+.BR \-n " or " \-\-name " Boot####
+.br
+delete named variable
+.TP
+.BR \-x " or " \-\-bootnext
+.br
+delete BootNext
+.TP
+.BR \-t " or " \-\-timeout
+.br
+delete Timeout
+.TP
+.BR \-o " or " \-\-bootorder
+.br
+delete the boot order
+.RE
+.TP 
+.I "reboot"
+.br
+reboot to firmware settings
+.SH "EXAMPLES"
+.PP
+.na
+.BR "Show the firmware boot menu":
+.PP
+.na
+.RS
+bootoption list
+.RE
+.PP
+.na
+.BR "Show an option's properties":
+.PP
+.na
+.RS
+bootoption info Boot0003
+.RE
+.PP
+.na
+.BR "Create a new load option, writing to stdout instead of NVRAM and piping to xxd(1)":
+.PP
+.na
+.RS
+bootoption create \-t \- \-l /Volumes/EFI/EFI/GRUB/GRUBX64.EFI \-d "GNU GRUB" | xxd
+.RE
+.SH "EXAMPLES (MUST BE ROOT)"
+.PP
+.na
+.BR "Create a new option and add it to the boot order":
+.PP
+.na
+.RS
+bootoption create \-l /Volumes/EFI/EFI/GRUB/GRUBX64.EFI \-d "GNU GRUB"
+.RE
+.PP
+.na
+.BR "Move an option from 4th to 1st in the boot order":
+.PP
+.na
+.RS
+bootoption order 4 to 1
+.RE
+.PP
+.na
+.BR "Disable an option":
+.PP
+.na
+.RS
+bootoption set \-n Boot0002 \-\-active=0
+.RE
+.PP
+.na
+.BR "Change the boot menu timeout to 10 seconds":
+.PP
+.na
+.RS
+bootoption set \-t 10
+.RE
+.PP
+.na
+.BR "Set an option's command line argmuments":
+.PP
+.na
+.RS
+bootoption set \-n Boot0000 \-a "initrd=/initramfs.img root=/dev/disk/by\-uuid/346d9a61\-f7e5\-4f58\-bad7\-026bb5376e0f"
+.RE
+.SH "SEE ALSO"
+nvram(8), efibootmgr(8)
+.SH "BUGS"
+github.com/vulgo/bootoption/issues
+.SH "AUTHOR"
+vulgo

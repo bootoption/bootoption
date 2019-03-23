@@ -1,0 +1,48 @@
+#!/bin/bash
+
+shopt -s nullglob extglob
+configuration="debug"
+static=
+prefix=/usr/local
+install=false
+
+for arg in "$@"
+do
+	case "$arg" in
+	@(|-|--)@(R|r)elease)
+		configuration="release"
+		;;
+	@(|-|--)static-stdlib)
+		static="-Xswiftc -static-stdlib"
+		;;
+	@(|-|--)install)
+		install=true
+		;;
+	@(|-|--)uninstall)
+		rm "$prefix/bin/bootoption"
+		rm "$prefix/man/man8/bootoption.8"
+		exit 0
+		;;
+	esac
+done
+
+arguments=$(tr -s ' ' <<< "build --disable-sandbox -c $configuration $static")
+echo "swift $arguments"
+echo "$arguments" | xargs swift
+
+if "$install"; then
+	executable="./.build/$configuration/bootoption"
+	if [[ -f "$executable" ]]; then
+		cp "$executable" "$prefix/bin"
+	else
+		echo "$executable not found"
+	fi
+	manpage="./man/man8/bootoption.8"
+	if [[ -f "$manpage" ]]; then
+		mkdir -p /usr/local/man/man8
+		cp "$manpage" "$prefix/man/man8"
+	else
+		echo "$manpage not found"
+	fi
+	bootoption --version	
+fi
