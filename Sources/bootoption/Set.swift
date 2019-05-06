@@ -1,5 +1,5 @@
 /*
- * set.swift
+ * Set.swift
  * Copyright © 2017-2019 vulgo
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -20,19 +20,19 @@ let set = Command("set", helpMessage: "set firmware variables") {
         try parser.parse(fromIndex: 2)
         
         if Options.useUCS2.wasSet && !Options.optionalDataString.wasSet {
-                let errorMessage = String(format: "%@: %@ is invalid without %@", parser.helpName ?? "", Options.useUCS2.description, Options.optionalDataString.description)
-                throw BootoptionError.usage(errorMessage: errorMessage, usageMessage: parser.usage())
+                let errorMessage = String(format: "%@ is invalid without %@", Options.useUCS2.description, Options.optionalDataString.description)
+                throw BootoptionError.usage(helpName: parser.helpName, errorMessage: errorMessage, usageMessage: parser.usage())
         }
         
         if Options.optionalDataString.wasSet && Options.optionalDataFile.wasSet {
-                let errorMessage = String(format: "%@: %@ and %@ cannot be used at the same time", parser.helpName ?? "", Options.optionalDataString.description, Options.optionalDataFile.description)
-                throw BootoptionError.usage(errorMessage: errorMessage, usageMessage: parser.usage())
+                let errorMessage = String(format: "%@ and %@ cannot be used at the same time", parser.helpName ?? "", Options.optionalDataString.description, Options.optionalDataFile.description)
+                throw BootoptionError.usage(helpName: parser.helpName, errorMessage: errorMessage, usageMessage: parser.usage())
         }
         
         if Options.bootNumber.wasSet {
                 guard Options.description.wasSet || Options.optionalDataString.wasSet || Options.optionalDataFile.wasSet || Options.active.wasSet || Options.hidden.wasSet else {
                         let errorMessage = String(format: "%@ used without required accompanying options", Options.bootNumber.description)
-                        throw BootoptionError.usage(errorMessage: errorMessage, usageMessage: parser.usage())
+                        throw BootoptionError.usage(helpName: parser.helpName, errorMessage: errorMessage, usageMessage: parser.usage())
                 }
         }
         
@@ -44,7 +44,7 @@ let set = Command("set", helpMessage: "set firmware variables") {
         if let description = Options.description.value {
                 guard !description.isEmpty else {
                         let errorMessage = "description should not be empty"
-                        throw BootoptionError.internal(message: errorMessage, Location())
+                        throw BootoptionError.internal(errorMessage: errorMessage, file: #file, function: #function)
                 }
         }
         
@@ -56,15 +56,12 @@ let set = Command("set", helpMessage: "set firmware variables") {
         
         if let bootNumber = Options.bootNumber.value {
                 
-                guard var option = try LoadOption(fromBootNumber: bootNumber, details: true) else {
-                        let errorMessage = String(format: "failed to initialize load option named %@", bootNumber.variableName)
-                        throw BootoptionError.internal(message: errorMessage, Location())
-                }
+                var option = try LoadOption(fromBootNumber: bootNumber, details: true)
                 
                 /* Description */
                 
                 if let description = Options.description.value, !description.isEmpty {
-                        option.description = description
+                        option.description.string = description
                         optionWantsUpdating = true
                 }
                 
@@ -73,40 +70,34 @@ let set = Command("set", helpMessage: "set firmware variables") {
                 if Options.optionalDataString.wasSet {
                         if Options.optionalDataString.value == nil {
                                 optionalDataWantsRemoving = true
-                        } else if Options.optionalDataString.value!.isEmpty {
+                        } else if let value = Options.optionalDataString.value, value.isEmpty {
                                 optionalDataWantsRemoving = true
                         } else {
-                                try option.optionalData.set(string: Options.optionalDataString.value!, isClover: option.isClover, useUCS2: Options.useUCS2.value)
+                                option.optionalData = try LoadOptionOptionalData(string: Options.optionalDataString.value!, isClover: option.isClover, useUCS2: Options.useUCS2.boolValue)
                                 optionWantsUpdating = true
                         }
                 }
                 
                 if Options.optionalDataFile.wasSet {
-                        let data = try Options.optionalDataFile.data()
-                        option.optionalData.data = data
+                        option.optionalData = LoadOptionOptionalData(data: try Options.optionalDataFile.data()!)
                         optionWantsUpdating = true
                 }
                 
                 if optionalDataWantsRemoving == true {
-                        if option.optionalData.data != nil {
-                                Debug.log("Removing optional data", type: .info)
-                                option.optionalData.remove()
-                                optionWantsUpdating = true
-                        } else {
-                                Debug.log("Optional data is already nil", type: .info)
-                                didSomething = true
-                        }
+                        Debug.log("Removing optional data", type: .info)
+                        option.optionalData = LoadOptionOptionalData()
+                        optionWantsUpdating = true
                 }
                 
                 /* Attributes */
                 
                 if let newHiddenValue = Options.hidden.value  {
-                        option.hidden = newHiddenValue
+                        option.attributes.hidden = newHiddenValue
                         optionWantsUpdating = true
                 }
                 
                 if let newActiveValue = Options.active.value{
-                        option.active = newActiveValue
+                        option.attributes.active = newActiveValue
                         optionWantsUpdating = true
                 }
                 
@@ -135,10 +126,11 @@ let set = Command("set", helpMessage: "set firmware variables") {
         
         if let bootOrder: [BootNumber] = Options.setBootOrder.value {
                 try FirmwareVariables.default.setBootOrder(array: bootOrder)
+                Debug.log("NVRAM Timeout was set", type: .info)
                 didSomething = true
         }
         
         guard didSomething == true else {
-                throw BootoptionError.usage(errorMessage: "", usageMessage: parser.usage())
+                throw BootoptionError.usage(helpName: nil, errorMessage: nil, usageMessage: parser.usage())
         }
 }

@@ -1,5 +1,5 @@
 /*
- * list.swift
+ * List.swift
  * Copyright © 2017-2019 vulgo
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -10,9 +10,9 @@ import BootoptionSupport
 
 let list = Command("list", helpMessage: "show the firmware boot menu") {
         var strings = [String]()
-        let bootCurrent: BootNumber? = FirmwareVariables.default.dataValue(forGlobalVariable: "BootCurrent")?.toUInt16()
-        let bootNext: BootNumber? = FirmwareVariables.default.dataValue(forGlobalVariable: "BootNext")?.toUInt16()
-        let timeout: UInt16? = FirmwareVariables.default.dataValue(forGlobalVariable: "Timeout")?.toUInt16()
+        let bootCurrent = FirmwareVariables.default.dataValue(forGlobalVariable: "BootCurrent")?.toUInt16()
+        let bootNext = FirmwareVariables.default.dataValue(forGlobalVariable: "BootNext")?.toUInt16()
+        let timeout = FirmwareVariables.default.dataValue(forGlobalVariable: "Timeout")?.toUInt16()
         let bootOrder: [BootNumber] = FirmwareVariables.default.getBootOrder()
         
         if let bootCurrent = bootCurrent {
@@ -38,12 +38,12 @@ let list = Command("list", helpMessage: "show the firmware boot menu") {
         var options = [LoadOption]()
         
         for bootNumber: BootNumber in 0x0 ..< 0xFF {
-                guard let option = try LoadOption(fromBootNumber: bootNumber) else {
+                guard let option = try? LoadOption(fromBootNumber: bootNumber) else {
                         continue
-                }
+                }                
                 options.append(option)
                 #if DEBUG
-                        guard let data = FirmwareVariables.default.loadOptionData(bootNumber) else {
+                        guard let data = FirmwareVariables.default.dataValue(forGlobalVariable: bootNumber.variableName) else {
                                 Debug.log("Nvram.shared.loadOptionData(%@) returned nil", type: .warning, argsList: bootNumber.variableName)
                                 continue
                         }
@@ -80,8 +80,8 @@ let list = Command("list", helpMessage: "show the firmware boot menu") {
                 
                 /* Description */
                 
-                if !option.description.isEmpty {
-                        string += option.description
+                if !option.description.string.isEmpty {
+                        string += option.description.string
                 } else {
                         string += String(repeating: "-", count: 16)
                         Debug.log("An option's description was empty", type: .warning)
@@ -89,11 +89,11 @@ let list = Command("list", helpMessage: "show the firmware boot menu") {
                 
                 /* Attributes */
                 
-                if !option.active {
+                if !option.attributes.active {
                         string += "  *D"
                 }
                 
-                if option.hidden {
+                if option.attributes.hidden {
                         string += "  *H"
                 }
                 

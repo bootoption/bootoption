@@ -7,8 +7,8 @@ let package = Package(
         name: "bootoption",
         dependencies: [
                 // Dependencies declare other packages that this package depends on.
-                .package(url: "https://github.com/bootoption/BootoptionSupport.git", from: "1.0.0"),
-                .package(url: "https://github.com/bootoption/Gaps.git", from: "1.0.0")
+                .package(path: "../BootoptionSupport"),
+                .package(path: "../Gaps")
         ],
         targets: [
                 // Targets are the basic building blocks of a package. A target can define a module or a test suite.

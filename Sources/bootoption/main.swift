@@ -8,9 +8,7 @@ import Foundation
 import Gaps
 import BootoptionSupport
 
-let version = "0.4.0"
-
-var standardError = FileHandle.standardError
+let version = "0.4.1"
 
 Debug.initialize(versionString: version)
 
@@ -21,36 +19,14 @@ do {
         try commandParser.parsedCommand?.call()
 }
 
-catch let error as BootoptionError {
+catch let error as CustomStringConvertible {
         switch error {
-        case .usage:
-                standardError.write(string: error.string)
+        case BootoptionError.usage:
+                FileHandle.standardError.write(string: "\(error)")
         default:
-                standardError.write(string: "error: " + error.string)
+                FileHandle.standardError.write(string: "error: \(error)")
         }
-
-        switch error {
-        case .usage:
-                exit(1)
-        case .file:
-                exit(2)
-        case .mustBeRoot:
-                exit(3)
-        case .internal, .foundNil:
-                exit(4)
-        case .devicePath:
-                exit(5)
-        }
-}
-        
-catch let error as FirmwareVariablesError {
-        standardError.write(string: "error: " + error.string)
-        exit(6)
-}
-
-catch let error as FileOptionError {
-        standardError.write(string: "error: " + error.string)
-        exit(7)
+        exit(1)
 }
 
 catch let error {

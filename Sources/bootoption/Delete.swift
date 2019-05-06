@@ -1,5 +1,5 @@
 /*
- * delete.swift
+ * Delete.swift
  * Copyright © 2017-2019 vulgo
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -28,13 +28,11 @@ let delete = Command("delete", helpMessage: "unset firmware variables") {
                 didSomething = true
                 
                 if FirmwareVariables.default.getBootOrder().contains(bootNumber) {
-                        Debug.log("Variable to delete is present in BootOrder", type: .info)
-                        
+                        Debug.log("Variable to delete %@ is present in BootOrder", type: .info, argsList: bootNumber.variableName)
                         try FirmwareVariables.default.setBootOrder(removing: bootNumber)                        
                 }
                 
-                Debug.log("Deleting variable", type: .info)
-                
+                Debug.log("Deleting variable %@", type: .info, argsList: bootNumber.variableName)
                 try FirmwareVariables.default.delete(globalVariable: bootNumber.variableName)
         }
         
@@ -57,6 +55,6 @@ let delete = Command("delete", helpMessage: "unset firmware variables") {
         }
         
         guard didSomething == true else {
-                throw BootoptionError.usage(errorMessage: "", usageMessage: parser.usage())
+                throw BootoptionError.usage(helpName: nil, errorMessage: nil, usageMessage: parser.usage())
         }
 }
