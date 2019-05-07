@@ -20,18 +20,18 @@ let set = Command("set", helpMessage: "set firmware variables") {
         try parser.parse(fromIndex: 2)
         
         if Options.useUCS2.wasSet && !Options.optionalDataString.wasSet {
-                let errorMessage = String(format: "%@ is invalid without %@", Options.useUCS2.description, Options.optionalDataString.description)
+                let errorMessage = String(format: "'%@' is invalid without '%@'", Options.useUCS2.description, Options.optionalDataString.description)
                 throw BootoptionError.usage(helpName: parser.helpName, errorMessage: errorMessage, usageMessage: parser.usage())
         }
         
         if Options.optionalDataString.wasSet && Options.optionalDataFile.wasSet {
-                let errorMessage = String(format: "%@ and %@ cannot be used at the same time", parser.helpName ?? "", Options.optionalDataString.description, Options.optionalDataFile.description)
+                let errorMessage = String(format: "'%@' and '%@' cannot be used at the same time", Options.optionalDataString.description, Options.optionalDataFile.description)
                 throw BootoptionError.usage(helpName: parser.helpName, errorMessage: errorMessage, usageMessage: parser.usage())
         }
         
         if Options.bootNumber.wasSet {
                 guard Options.description.wasSet || Options.optionalDataString.wasSet || Options.optionalDataFile.wasSet || Options.active.wasSet || Options.hidden.wasSet else {
-                        let errorMessage = String(format: "%@ used without required accompanying options", Options.bootNumber.description)
+                        let errorMessage = String(format: "'%@' used without required accompanying options", Options.bootNumber.description)
                         throw BootoptionError.usage(helpName: parser.helpName, errorMessage: errorMessage, usageMessage: parser.usage())
                 }
         }
