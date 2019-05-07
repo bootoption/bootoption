@@ -19,12 +19,12 @@ let create = Command("create", helpMessage: "create a new load option and add it
         try parser.parse(fromIndex: 2)
         
         if Options.useUCS2.wasSet && !Options.optionalDataString.wasSet {
-                let errorMessage = String(format: "%@ is invalid without %@", Options.useUCS2.description, Options.optionalDataString.description)
+                let errorMessage = String(format: "'%@' is invalid without '%@'", Options.useUCS2.description, Options.optionalDataString.description)
                 throw BootoptionError.usage(helpName: parser.helpName, errorMessage: errorMessage, usageMessage: parser.usage())
         }
         
         if Options.optionalDataString.wasSet && Options.optionalDataFile.wasSet {
-                let errorMessage = String(format: "%@ and %@ cannot be used at the same time", Options.optionalDataString.description, Options.optionalDataFile.description)
+                let errorMessage = String(format: "'%@' and '%@' cannot be used at the same time", Options.optionalDataString.description, Options.optionalDataFile.description)
                 throw BootoptionError.usage(helpName: parser.helpName, errorMessage: errorMessage, usageMessage: parser.usage())
         }
         
