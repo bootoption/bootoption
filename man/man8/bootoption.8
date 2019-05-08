@@ -1,4 +1,4 @@
-.TH "BOOTOPTION" "8" "November 2018" "bootoption 0.3" "bootoption"
+.TH "BOOTOPTION" "8" "May 2019" "bootoption 0.6" "bootoption"
 .SH "NAME"
 bootoption \- EFI boot menu manipulation 
 .SH "SYNOPSIS"
@@ -177,7 +177,7 @@ bootoption create \-l /Volumes/EFI/EFI/GRUB/GRUBX64.EFI \-d "GNU GRUB"
 .PP
 .na
 .RS
-bootoption order 4 to 1
+bootoption order 4 1
 .RE
 .PP
 .na
@@ -185,7 +185,7 @@ bootoption order 4 to 1
 .PP
 .na
 .RS
-bootoption set \-n Boot0002 \-\-active=0
+bootoption set \-n Boot0002 \-\-active 0
 .RE
 .PP
 .na
@@ -206,6 +206,6 @@ bootoption set \-n Boot0000 \-a "initrd=/initramfs.img root=/dev/disk/by\-uuid/3
 .SH "SEE ALSO"
 nvram(8), efibootmgr(8)
 .SH "BUGS"
-github.com/vulgo/bootoption/issues
+github.com/bootoption/bootoption/issues
 .SH "AUTHOR"
 vulgo
