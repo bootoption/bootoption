@@ -6,9 +6,11 @@
 
 EFI boot menu manipulation for macOS, report bugs [here on GitHub](https://github.com/bootoption/bootoption/issues).
 
-## Install
+## Installation
 
-Install bootoption with [Homebrew](https://docs.brew.sh/Installation):
+Installer packages are available from the [Releases](https://github.com/bootoption/bootoption/releases) page.
+
+#### Homebrew
 
 ```
 brew tap bootoption/repo
@@ -17,55 +19,55 @@ brew install bootoption
 
 ## Usage
 
-bootoption \<command> [options]
+##### Show help
 
-available commands:
+```
+bootoption --help
+```
 
-- <strong>list</strong>&nbsp;&nbsp;show the firmware boot menu
-- <strong>info</strong>&nbsp;&nbsp;show an option's properties
-- <strong>create</strong>&nbsp;&nbsp;create a new load option and add it to the boot order
-- <strong>order</strong>&nbsp;&nbsp;change the boot order
-- <strong>set</strong>&nbsp;&nbsp;set firmware variables
-- <strong>delete</strong>&nbsp;&nbsp;unset firmware variables
-- <strong>reboot</strong>&nbsp;&nbsp;reboot to firmware settings
+##### The packages also install a man page
 
-#### Create a new option and add it to the boot order
+```
+man bootoption
+```
+
+##### Create a new option and add it to the boot order
 
 ```
 sudo bootoption create -l /Volumes/EFI/EFI/GRUB/GRUBX64.EFI -d "GNU GRUB"
 ```
 
-#### Move an option from 4th to 1st in the boot order
+##### Move an option from 4th to 1st in the boot order
 
 ```
 sudo bootoption order 4 1
 ```
 
-#### Disable an option
+##### Disable an option
 
 ```
 sudo bootoption set -n Boot0002 --active 0
 ```
 
-#### Change the boot menu timeout to 10 seconds
+##### Change the boot menu timeout to 10 seconds
 
 ```
 sudo bootoption set -t 10
 ```
 
-#### Set an option's command line argmuments
+##### Set an option's command line argmuments
 
 ```
 sudo bootoption set -n Boot0000 -a "initrd=/initramfs.img root=/dev/disk/by-uuid/346d9a61-f7e5-4f58-bad7-026bb5376e0f"
 ```
 
-#### Reboot to firmware settings
+##### Reboot to firmware settings
 
 ```
 sudo bootoption reboot
 ```
 
-### System Integrity Protection
+## System Integrity Protection
 
 Note: csrutil needs to be executed from the Recovery OS.
 
