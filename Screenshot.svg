@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1600 1050">
+    <defs>
+        <style>@import url('https://fonts.googleapis.com/css?family=Inconsolata');</style>
+        <circle id="window-control" cx="50" cy="50" r="12" style="fill: rgb(244,244,244);" />
+    </defs>
+    <rect width="100%" height="100%" rx="20" ry="20" style="fill: darkslategray;" />
+    <use x="0" y="0" xlink:href="#window-control" />
+    <use x="40" y="0" xlink:href="#window-control" />
+    <use x="80" y="0" xlink:href="#window-control" />
+    <svg x="35" y="90">
+        <text style="font-family: Inconsolata, monospace; font-size: 32px; fill: rgb(244,244,244);">
+            <tspan x="0" y="32" style="font-weight: bold;">$ bootoption list</tspan>
+            <tspan x="0" dy="44">BootCurrent: Boot0001</tspan>
+            <tspan x="0" dy="44">BootNext: Not set</tspan>
+            <tspan x="0" dy="44">Timeout: 1</tspan>
+            <tspan x="0" dy="44">  1: Boot0000 Linux Boot Manager</tspan>
+            <tspan x="0" dy="44">  2: Boot0001 Clover</tspan>
+            <tspan x="0" dy="44">  3: Boot0002 Windows Boot Manager</tspan>
+            <tspan x="0" dy="44">  4: Boot0080 Mac OS X</tspan>
+            <tspan x="0" dy="44">  5: Boot0082 UEFI: IP4 Realtek PCIe GBE Family Controller</tspan>
+            <tspan x="0" dy="44">  6: Boot0083 UEFI: IP6 Realtek PCIe GBE Family Controller</tspan>
+            <tspan x="0" dy="44" style="font-weight: bold;">$ bootoption info Boot0000</tspan>
+            <tspan x="0" dy="44">Name: Boot0000</tspan>
+            <tspan x="0" dy="44">Description: Linux Boot Manager</tspan>
+            <tspan x="0" dy="44">Partition UUID: 3ECFA8D5-8C7F-485E-A90E-A917F1FA7DA5</tspan>
+            <tspan x="0" dy="44">Loader Path: \EFI\SYSTEMD\SYSTEMD-BOOTX64.EFI</tspan>
+            <tspan x="0" dy="44" style="font-weight: bold;">$ sudo diskutil mount 3ECFA8D5-8C7F-485E-A90E-A917F1FA7DA5</tspan>
+            <tspan x="0" dy="44">Password:</tspan>
+            <tspan x="0" dy="44">Volume EFI on 3ECFA8D5-8C7F-485E-A90E-A917F1FA7DA5 mounted</tspan>
+            <tspan x="0" dy="44" style="font-weight: bold;">$ _</tspan>
+        </text>
+    </svg>
+</svg>

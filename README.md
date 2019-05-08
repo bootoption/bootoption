@@ -1,7 +1,7 @@
 #  bootoption
 
 <p align="center">
-<img src="https://github.com/bootoption/bootoption/raw/master/Screenshot.png" alt="bootoption screenshot" width="700" />
+<img src="https://github.com/bootoption/bootoption/raw/swift5/Screenshot.svg?sanitize=true" alt="bootoption screenshot" />
 </p>
 
 EFI boot menu manipulation for macOS, report bugs [here on GitHub](https://github.com/bootoption/bootoption/issues).
@@ -84,12 +84,6 @@ csrutil enable --without nvram
 ```
 
 ## License
-
-Copyright © vulgo 2017-2019
-
-bootoption is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program.  If not, see [https://www.gnu.org/licenses/](https://www.gnu.org/licenses/).
 
