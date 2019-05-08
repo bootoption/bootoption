@@ -17,7 +17,7 @@ let reboot = Command("reboot", helpMessage: "reboot to firmware settings") {
         
         var scriptError: NSDictionary?
         
-        guard let script = NSAppleScript(source: "tell application \"System Events\" to restart") else {
+        guard let script = NSAppleScript(source: #"tell application "System Events" to restart"#) else {
                 let errorMessage = "error initializing apple script"
                 throw BootoptionError.internal(errorMessage: errorMessage, file: #file, function: #function)
         }
