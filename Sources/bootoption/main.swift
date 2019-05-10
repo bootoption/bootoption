@@ -8,7 +8,7 @@ import Foundation
 import Gaps
 import BootoptionSupport
 
-let version = "0.5.0"
+let version = "0.6.0"
 
 Debug.initialize(versionString: version)
 
