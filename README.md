@@ -1,7 +1,7 @@
 #  bootoption
 
 <p align="center">
-<img src="https://github.com/bootoption/bootoption/raw/swift5/Screenshot.svg?sanitize=true" alt="bootoption screenshot" />
+<img src="https://github.com/bootoption/bootoption/raw/master/Screenshot.svg?sanitize=true" alt="bootoption screenshot" />
 </p>
 
 EFI boot menu manipulation for macOS, report bugs [here on GitHub](https://github.com/bootoption/bootoption/issues).
