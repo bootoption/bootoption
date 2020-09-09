@@ -8,7 +8,7 @@ EFI boot menu manipulation for macOS, report bugs [here on GitHub](https://githu
 
 ## Installation
 
-Installer packages are available from the [Releases](https://github.com/bootoption/bootoption/releases) page.
+Binaries and installer packages are available from the [Releases](https://github.com/bootoption/bootoption/releases) page.
 
 #### Homebrew
 
